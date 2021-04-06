@@ -1,4 +1,4 @@
-# RipTikTok
+# RipTok
 TikTok ripper based on TikTok-Api. Some assembly required.
 
 Script provided as is. Absolutely no guarantee.
