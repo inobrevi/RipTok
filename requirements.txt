@@ -1,0 +1,4 @@
+TikTokApi==3.9.5
+youtube-dl==2021.4.1
+pytz==2020.5
+numpy==1.19.4
