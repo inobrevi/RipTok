@@ -9,6 +9,7 @@ import argparse
 
 """
 TODO:
+maybe externalise things like download path, sleeping time, timezone, 
 overwrite function
 !!! logging !!!
 """
@@ -21,15 +22,15 @@ parser.add_argument('user', type=str, default="test", help='Here be username (wi
 args = parser.parse_args()
 
 
-
 class RipTikTok:
-	def __init__(self, username, try_limit=3):
+	def __init__(self, username):
 		self.api = TikTokApi()
 		self.username = username
 		self.video_count = self.api.get_user(self.username)["userInfo"]["stats"]["videoCount"]
 		self.user_tiktoks = self.api.by_username(self.username, count=self.video_count)
 		self.tz = pytz.timezone('UTC')
-		self.try_limit = try_limit
+		self.fallback_counter = 0
+		self.error404_counter = 0
 		print("init complete")
 
 	@staticmethod
@@ -53,14 +54,24 @@ class RipTikTok:
 		return datetime.fromtimestamp(t, self.tz).isoformat()[:-6].replace(':', '_')
 
 	def verify_download(self, file_path, video_url):
-		if os.stat(file_path).st_size < 1024:  # if file malformed (too small) delete file and use ytdl
-			print("Verification failed. Falling back to Youtube-dl!")
-			try:
+		try:
+			if os.stat(file_path).st_size < 1024:  # if file malformed (too small) delete file and use ytdl
+				print("Verification failed. Falling back to Youtube-dl!")
 				os.remove(file_path)
-			except OSError:
-				pass
-			self.save_with_ytdl(file_path, video_url)
-			print()
+				self.fallback_counter += 1
+				self.save_with_ytdl(file_path, video_url)
+				print()
+		except OSError:
+			print("I'm not sure what is failing here, but meh")
+			if not os.path.isfile(file_path):
+				try:
+					print("Oh, ok, that was that!")
+					self.save_with_ytdl(file_path, video_url)
+				except youtube_dl.utils.DownloadError:
+					print("Error 404 - not found")
+					self.error404_counter += 1
+					pass
+			pass
 
 	def download_all(self):
 		download_path = os.path.join("_rips", self.username)
@@ -97,7 +108,9 @@ class RipTikTok:
 
 			self.verify_download(file_path, video_url)  # checking if file is good
 
-		print("\nAll videos downloaded!")
+		print("\nAll {} videos downloaded!".format(self.video_count))
+		print("Fallback counter:", self.fallback_counter)
+		print("Error 404 counter:", self.error404_counter)
 
 	def debug_print(self):
 		print("Username: " + str(self.username))
