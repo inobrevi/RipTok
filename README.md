@@ -3,6 +3,7 @@ Script provided as is. Absolutely no guarantee.
 
 A TikTok ripper based on TikTokApi and YouTube-dl.  Some assembly may be required.
 
+```
 positional arguments:
   user                  Target username to rip
 
@@ -19,7 +20,7 @@ optional arguments:
                         The maximum sleep delay between downloads (in Seconds)
 
 Have fun!
-  
+```
  
 Ripper by default is creating a new folder in running diectory ("_rips") and puts video files in folders by username.
 Follow instructions in callback when installing TikTok_Api and instruction on project sites and documenetation.
