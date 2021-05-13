@@ -190,6 +190,9 @@ class Ripper:
                 successful_downloads.append(video_url)
             else:
                 failed_downloads.append(video_url)
+            sleep_time = random.uniform(self.sleep_min, self.sleep_max)
+            logger.info("Sleeping for: " + str(sleep_time) + " seconds")
+            sleep(sleep_time)
         logger.info("Processed all {} videos".format(self.video_count))
         logger.debug("Fallback counter: " + str(self.fallback_counter))
         logger.debug("YouTube-dl DownloadError counter: " + str(self.fallback_counter))
