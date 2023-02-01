@@ -1,4 +1,4 @@
-# RipTok
+# RipTok - currentlly not working due to changes in TikTok and unoffical API
 Script provided as is. Absolutely no guarantee.
 
 A TikTok ripper based on TikTokApi and YouTube-dl.  Some assembly may be required.
