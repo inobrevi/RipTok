@@ -1,3 +1,6 @@
+# Manual temporary workaround:
+https://www.reddit.com/r/DataHoarder/comments/13hjddd/riptok_tiktok_download_manual_edition/
+
 # RipTok - currentlly not working due to changes in TikTok and unoffical API
 Script provided as is. Absolutely no guarantee.
 
